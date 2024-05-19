@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthService {
     private final MemberRepository memberRepository;
-    private final BCryptPasswordEncoder pwEncoder;'
+    private final BCryptPasswordEncoder pwEncoder;
 
     public ResponseEntity<MemberGetRes> signUp(SignUpReq req) {
         if(req == null) {
