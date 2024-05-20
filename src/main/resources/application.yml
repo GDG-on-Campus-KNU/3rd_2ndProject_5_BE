@@ -1,5 +1,5 @@
 spring:
   config:
     import:
-      - jwt
-      - db
+      - application-jwt.yml
+      - application-db.yml
