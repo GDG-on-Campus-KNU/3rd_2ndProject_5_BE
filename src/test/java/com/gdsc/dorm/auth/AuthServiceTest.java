@@ -5,7 +5,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gdsc.dorm.auth.data.dto.req.LoginReq;
 import com.gdsc.dorm.auth.data.dto.req.SignUpReq;
+import com.gdsc.dorm.auth.data.dto.res.LoginRes;
+import com.gdsc.dorm.jwt.RefreshTokenRepository;
+import com.gdsc.dorm.jwt.data.RefreshToken;
 import com.gdsc.dorm.member.MemberRepository;
 import com.gdsc.dorm.member.data.Member;
 import com.gdsc.dorm.member.type.Dorm;
@@ -16,7 +20,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -29,6 +35,9 @@ public class AuthServiceTest {
 
     @Autowired
     MemberRepository memberRepository;
+
+    @Autowired
+    RefreshTokenRepository refreshTokenRepository;
 
     @Autowired
     MockMvc mockMvc;
@@ -103,5 +112,49 @@ public class AuthServiceTest {
                 authService.signUp(req);
             });
 
+    }
+
+    @Test
+    void login() {
+        //given
+        //테스트 유저 정보 저장
+        String name = "testMember";
+        String email = "test@mail.com";
+        String password = "testPw";
+        Gender gender = Gender.MALE;
+        Dorm dorm = Dorm.BONGSA;
+
+        SignUpReq signUpreq = new SignUpReq();
+        signUpreq.setName(name);
+        signUpreq.setEmail(email);
+        signUpreq.setPassword(password);
+        signUpreq.setGender(gender);
+        signUpreq.setDorm(dorm);
+
+        authService.signUp(signUpreq);
+
+        //when
+        // login 요청 만들고 authService의 login 메서드 실행
+        LoginReq loginReq = new LoginReq();
+        loginReq.setEmail(email);
+        loginReq.setPassword(password);
+
+        ResponseEntity<LoginRes> res = authService.login(loginReq);
+        //then
+        //Token 발급 확인
+        //ResponseEntity의 HttpStatus가 OK인지 확인
+
+        LoginRes resBody = res.getBody();
+
+        Member testMember = memberRepository.findByEmail(email)
+                        .orElseThrow(() -> new IllegalArgumentException());
+
+        RefreshToken inDbRefreshToken = refreshTokenRepository.findByMemberId(testMember.getId())
+                        .orElseThrow(() -> new IllegalArgumentException());
+
+
+        assertEquals(res.getStatusCode(), HttpStatus.OK);
+        assertNotNull(resBody.getAccessToken());
+        assertEquals(resBody.getRefreshToken(), inDbRefreshToken.getRefreshToken());
     }
 }
