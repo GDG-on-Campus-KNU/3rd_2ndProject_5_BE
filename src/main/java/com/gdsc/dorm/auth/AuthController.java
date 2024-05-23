@@ -1,6 +1,8 @@
 package com.gdsc.dorm.auth;
 
+import com.gdsc.dorm.auth.data.dto.req.LoginReq;
 import com.gdsc.dorm.auth.data.dto.req.SignUpReq;
+import com.gdsc.dorm.auth.data.dto.res.LoginRes;
 import com.gdsc.dorm.member.data.dto.res.MemberGetRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,5 +20,10 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<MemberGetRes> signup(@RequestBody SignUpReq req){
         return authService.signUp(req);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginRes> login(@RequestBody LoginReq req) {
+        return authService.login(req);
     }
 }
