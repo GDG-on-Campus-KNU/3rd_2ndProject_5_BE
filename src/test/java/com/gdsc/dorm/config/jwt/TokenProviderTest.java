@@ -40,7 +40,7 @@ public class TokenProviderTest {
                 .build());
 
         //when
-        String token = tokenProvider.generateToken(member, Duration.ofDays(14));
+        String token = tokenProvider.generateToken(member, "access");
 
         //then
         Long memberId = Jwts.parserBuilder()

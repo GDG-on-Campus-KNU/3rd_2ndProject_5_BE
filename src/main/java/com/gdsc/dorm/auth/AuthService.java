@@ -58,8 +58,8 @@ public class AuthService {
             throw new IllegalArgumentException("비밀번호를 틀렸습니다.");
         }
 
-        String accessToken = tokenProvider.generateToken(loginMember, Duration.ofDays(1));
-        String refreshToken = tokenProvider.generateToken(loginMember, Duration.ofDays(7));
+        String accessToken = tokenProvider.generateToken(loginMember, "access");
+        String refreshToken = tokenProvider.generateToken(loginMember, "refresh");
 
         RefreshToken refreshTokenEntity = new RefreshToken(loginMember.getId(), refreshToken);
         refreshTokenRepository.save(refreshTokenEntity);

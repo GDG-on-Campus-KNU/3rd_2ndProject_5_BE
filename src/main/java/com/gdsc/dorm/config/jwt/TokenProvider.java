@@ -8,6 +8,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,9 +22,17 @@ import org.springframework.stereotype.Service;
 public class TokenProvider {
     private final JwtProperties jwtProperties;
 
-    public String generateToken(Member member, Duration expiredAt) {
+    private final Map<String, Long> expirationDate = new HashMap<>() {
+        {
+            put("access", Duration.ofDays(1).toMillis());
+            put("refresh", Duration.ofDays(7).toMillis());
+        }
+    };
+
+    public String generateToken(Member member, String type) {
         Date now = new Date();
-        return makeToken(new Date(now.getTime() + expiredAt.toMillis()), member);
+        Date expiry = new Date(now.getTime() + expirationDate.get(type));
+        return makeToken(expiry, member);
     }
 
     //토큰 생성 메서드
