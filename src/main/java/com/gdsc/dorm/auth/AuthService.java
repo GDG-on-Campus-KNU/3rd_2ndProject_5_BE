@@ -13,6 +13,9 @@ import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -52,10 +55,10 @@ public class AuthService {
         }
 
         Member loginMember = memberRepository.findByEmail(req.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자입니다."));
 
         if(!pwEncoder.matches(req.getPassword(), loginMember.getPassword())) {
-            throw new IllegalArgumentException("비밀번호를 틀렸습니다.");
+            throw new BadCredentialsException("비밀번호를 틀렸습니다.");
         }
 
         String accessToken = tokenProvider.generateToken(loginMember, "access");
@@ -71,5 +74,14 @@ public class AuthService {
 
         return new ResponseEntity<>(res, HttpStatus.OK);
 
+    }
+
+    public void logout() {
+        Member loginMember = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Long memberId = loginMember.getId();
+        if(refreshTokenRepository.existsByMemberId(memberId)) {
+            refreshTokenRepository.deleteByMemberId(memberId);
+        }
     }
 }

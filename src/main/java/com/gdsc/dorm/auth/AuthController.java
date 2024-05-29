@@ -32,11 +32,9 @@ public class AuthController {
         return authService.login(req);
     }
 
-    @GetMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response) {
-        new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext()
-                .getAuthentication());
-
-        return "redirect:/main"; //임시로 지정한 리다이렉션
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout() {
+        authService.logout();
+        return ResponseEntity.ok().build();
     }
 }
