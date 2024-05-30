@@ -27,11 +27,6 @@ public class AuthController {
         return authService.signUp(req);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<LoginRes> login(@RequestBody LoginReq req) {
-        return authService.login(req);
-    }
-
     @PostMapping("/logout")
     public ResponseEntity<Void> logout() {
         authService.logout();

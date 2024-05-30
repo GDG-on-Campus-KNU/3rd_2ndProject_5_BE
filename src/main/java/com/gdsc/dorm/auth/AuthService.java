@@ -49,33 +49,6 @@ public class AuthService {
         return new ResponseEntity<>(new MemberGetRes(newMember), HttpStatus.CREATED);
     }
 
-    public ResponseEntity<LoginRes> login(LoginReq req) {
-        if(req == null) {
-            throw new IllegalArgumentException("잘못된 요청입니다.");
-        }
-
-        Member loginMember = memberRepository.findByEmail(req.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자입니다."));
-
-        if(!pwEncoder.matches(req.getPassword(), loginMember.getPassword())) {
-            throw new BadCredentialsException("비밀번호를 틀렸습니다.");
-        }
-
-        String accessToken = tokenProvider.generateToken(loginMember, "access");
-        String refreshToken = tokenProvider.generateToken(loginMember, "refresh");
-
-        RefreshToken refreshTokenEntity = new RefreshToken(loginMember.getId(), refreshToken);
-        refreshTokenRepository.save(refreshTokenEntity);
-
-        LoginRes res = LoginRes.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
-
-        return new ResponseEntity<>(res, HttpStatus.OK);
-
-    }
-
     public void logout() {
         Member loginMember = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
