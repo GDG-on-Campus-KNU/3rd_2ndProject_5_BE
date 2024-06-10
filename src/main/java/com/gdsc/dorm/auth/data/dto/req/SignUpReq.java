@@ -11,5 +11,6 @@ public class SignUpReq {
     private String password;
     private Gender gender;
     private Dorm dorm;
-
+    private String birthYear;
+    private String studentId;
 }

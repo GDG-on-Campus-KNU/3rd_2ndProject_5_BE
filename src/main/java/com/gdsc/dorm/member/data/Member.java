@@ -35,13 +35,20 @@ public class Member implements UserDetails {
 
     private Dorm dorm;
 
+    private String birthYear;
+
+    @Column(unique = true)
+    private String studentId;
+
     @Builder
-    public Member(String name, String email, String password, Gender gender, Dorm dorm) {
+    public Member(String name, String email, String password, Gender gender, Dorm dorm, String birthYear, String studentId) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.gender = gender;
         this.dorm = dorm;
+        this.birthYear = birthYear;
+        this.studentId = studentId;
     }
 
     @Override
@@ -56,7 +63,7 @@ public class Member implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return email;
     }
 
     @Override
