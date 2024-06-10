@@ -9,6 +9,7 @@ import com.gdsc.dorm.jwt.data.RefreshToken;
 import com.gdsc.dorm.member.MemberRepository;
 import com.gdsc.dorm.member.data.Member;
 import com.gdsc.dorm.member.data.dto.res.MemberGetRes;
+import jakarta.servlet.http.HttpServletRequest;
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -46,12 +47,14 @@ public class AuthService {
         return new ResponseEntity<>(new MemberGetRes(newMember), HttpStatus.CREATED);
     }
 
-    public void logout() {
-        Member loginMember = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public void logout(HttpServletRequest request) {
+        String token = tokenProvider.getAccessToken(request.getHeader("Authorization"));
 
-        Long memberId = loginMember.getId();
+        Long memberId = tokenProvider.getUserId(token);
         if(refreshTokenRepository.existsByMemberId(memberId)) {
             refreshTokenRepository.deleteByMemberId(memberId);
         }
+
+        SecurityContextHolder.clearContext();
     }
 }

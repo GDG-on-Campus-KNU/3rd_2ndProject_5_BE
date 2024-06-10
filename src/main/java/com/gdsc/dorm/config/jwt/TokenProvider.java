@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class TokenProvider {
     private final JwtProperties jwtProperties;
+    private final static String TOKEN_PREFIX = "Bearer ";
 
     private final Map<String, Long> expirationDate = new HashMap<>() {
         {
@@ -82,5 +83,12 @@ public class TokenProvider {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    public String getAccessToken(String authorizationHeader) {
+        if(authorizationHeader != null && authorizationHeader.startsWith(TOKEN_PREFIX)) {
+            return authorizationHeader.substring(TOKEN_PREFIX.length());
+        }
+        return null;
     }
 }
