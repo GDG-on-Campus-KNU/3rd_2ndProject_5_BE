@@ -1,5 +1,7 @@
 package com.gdsc.dorm.member.data;
 
+import com.gdsc.dorm.checklist.data.MateChecklist;
+import com.gdsc.dorm.checklist.data.UserChecklist;
 import com.gdsc.dorm.member.type.Dorm;
 import com.gdsc.dorm.member.type.Gender;
 import jakarta.persistence.Column;
@@ -7,6 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import java.util.Collection;
 import java.util.List;
 import lombok.Builder;
@@ -39,6 +43,14 @@ public class Member implements UserDetails {
 
     @Column(unique = true)
     private String studentId;
+
+    @OneToOne
+    @JoinColumn(referencedColumnName = "UserChecklist")
+    private UserChecklist userChecklist;
+
+    @OneToOne
+    @JoinColumn(referencedColumnName = "MateCheckList")
+    private MateChecklist mateChecklist;
 
     @Builder
     public Member(String name, String email, String password, Gender gender, Dorm dorm, String birthYear, String studentId) {
