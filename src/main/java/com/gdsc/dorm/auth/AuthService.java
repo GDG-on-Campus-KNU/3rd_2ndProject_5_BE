@@ -40,6 +40,8 @@ public class AuthService {
                 .password(bcryptPw)
                 .gender(req.getGender())
                 .dorm(req.getDorm())
+                .birthYear(req.getBirthYear())
+                .studentId(req.getStudentId())
                 .build();
 
         memberRepository.save(newMember);
