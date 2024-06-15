@@ -45,11 +45,11 @@ public class Member implements UserDetails {
     private String studentId;
 
     @OneToOne
-    @JoinColumn(referencedColumnName = "UserChecklist")
+    @JoinColumn(name = "userChecklist_id")
     private UserChecklist userChecklist;
 
     @OneToOne
-    @JoinColumn(referencedColumnName = "MateCheckList")
+    @JoinColumn(name = "mateChecklist_id")
     private MateChecklist mateChecklist;
 
     @Builder

@@ -7,18 +7,22 @@ import com.gdsc.dorm.checklist.data.option.ShowerTime;
 import com.gdsc.dorm.checklist.data.option.SleepHabit;
 import com.gdsc.dorm.checklist.data.option.SleepTime;
 import com.gdsc.dorm.checklist.data.option.Smoke;
+import com.gdsc.dorm.member.data.Member;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @NoArgsConstructor
 @Getter
+@DynamicUpdate
 public class MateChecklist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

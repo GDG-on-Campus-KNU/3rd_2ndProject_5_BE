@@ -8,18 +8,22 @@ import com.gdsc.dorm.checklist.data.option.ShowerTime;
 import com.gdsc.dorm.checklist.data.option.SleepHabit;
 import com.gdsc.dorm.checklist.data.option.SleepTime;
 import com.gdsc.dorm.checklist.data.option.Smoke;
+import com.gdsc.dorm.member.data.Member;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @NoArgsConstructor
 @Getter
+@DynamicUpdate
 public class UserChecklist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,5 +54,26 @@ public class UserChecklist {
         this.cold = cold;
         this.smoke = smoke;
         this.itemShare = itemShare;
+    }
+
+    public void update(UserChecklist newChecklist) {
+        if (newChecklist.getSleepTime() != null)
+            this.sleepTime = newChecklist.getSleepTime();
+        if (newChecklist.getAwakeTime() != null)
+            this.awakeTime = newChecklist.getAwakeTime();
+        if (newChecklist.getShowerTakeTime() != null)
+            this.showerTakeTime = newChecklist.getShowerTakeTime();
+        if (newChecklist.getShowerTime() != null)
+            this.showerTime = newChecklist.getShowerTime();
+        if (newChecklist.getCleaningFreq() != null)
+            this.cleaningFreq = newChecklist.getCleaningFreq();
+        if (newChecklist.getSleepHabits() != null)
+            this.sleepHabits = newChecklist.getSleepHabits();
+        if (newChecklist.getHot() != 0)
+            this.hot = newChecklist.getHot();
+        if (newChecklist.getCold() != 0)
+            this.cold = newChecklist.getCold();
+        if (newChecklist.getSmoke() != null)
+            this.smoke = newChecklist.getSmoke();
     }
 }
