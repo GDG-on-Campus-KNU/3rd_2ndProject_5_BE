@@ -13,7 +13,7 @@ public class MemberGetRes {
     private Dorm dorm;
 
     public MemberGetRes(Member member) {
-        this.name = member.getUsername();
+        this.name = member.getName();
         this.email = member.getEmail();
         this.gender = member.getGender();
         this.dorm = member.getDorm();
