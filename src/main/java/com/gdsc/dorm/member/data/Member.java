@@ -97,4 +97,12 @@ public class Member implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public void updateMemberChecklist(UserChecklist userChecklist) {
+        this.userChecklist = userChecklist;
+    }
+
+    public void updateMateChecklist(MateChecklist mateChecklist) {
+        this.mateChecklist = mateChecklist;
+    }
 }

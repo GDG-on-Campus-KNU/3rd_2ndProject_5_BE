@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.util.List;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -35,5 +36,19 @@ public class UserChecklist {
     private Smoke smoke;
     private ItemShare itemShare;
 
-
+    @Builder
+    public UserChecklist(SleepTime sleepTime, AwakeTime awakeTime, ShowerTakeTime showerTakeTime,
+                         ShowerTime showerTime, CleaningFreq cleaningFreq, List<SleepHabit> sleepHabits,
+                         int hot, int cold, Smoke smoke, ItemShare itemShare) {
+        this.sleepTime = sleepTime;
+        this.awakeTime = awakeTime;
+        this.showerTakeTime = showerTakeTime;
+        this.showerTime = showerTime;
+        this.cleaningFreq = cleaningFreq;
+        this.sleepHabits = sleepHabits;
+        this.hot = hot;
+        this.cold = cold;
+        this.smoke = smoke;
+        this.itemShare = itemShare;
+    }
 }

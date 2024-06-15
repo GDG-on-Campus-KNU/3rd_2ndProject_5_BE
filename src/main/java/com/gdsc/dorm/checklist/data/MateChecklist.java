@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.util.List;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,4 +31,17 @@ public class MateChecklist {
     private CleaningFreq cleaningFreq;
     private List<SleepHabit> sleepHabits;
     private Smoke smoke;
+
+    @Builder
+    public MateChecklist(SleepTime sleepTime, AwakeTime awakeTime, ShowerTakeTime showerTakeTime,
+                         ShowerTime showerTime, CleaningFreq cleaningFreq, List<SleepHabit> sleepHabits,
+                         Smoke smoke) {
+        this.sleepTime = sleepTime;
+        this.awakeTime = awakeTime;
+        this.showerTakeTime = showerTakeTime;
+        this.showerTime = showerTime;
+        this.cleaningFreq = cleaningFreq;
+        this.sleepHabits = sleepHabits;
+        this.smoke = smoke;
+    }
 }
