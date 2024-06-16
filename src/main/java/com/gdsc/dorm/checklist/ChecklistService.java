@@ -68,7 +68,7 @@ public class ChecklistService {
         UserChecklist existingChecklist = member.getUserChecklist();
         existingChecklist.update(req.toEntity());
 
-        return new ResponseEntity<>(new GetMemberChecklistRes(existingChecklist), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new GetMemberChecklistRes(existingChecklist), HttpStatus.OK);
     }
 
     @Transactional
@@ -81,6 +81,6 @@ public class ChecklistService {
         MateChecklist existingChecklist = member.getMateChecklist();
         existingChecklist.update(req.toEntity());
 
-        return new ResponseEntity<>(new GetMateChecklistRes(existingChecklist), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new GetMateChecklistRes(existingChecklist), HttpStatus.OK);
     }
 }
