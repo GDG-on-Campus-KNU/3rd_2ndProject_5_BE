@@ -34,4 +34,9 @@ public class ChecklistController {
     public ResponseEntity<GetMemberChecklistRes> updateMemberChecklist(@RequestHeader(AUTHORIZATION_HEADER) String authorizationHeader, @RequestBody MakeMemberChecklistReq req) {
         return checklistService.updateMemberChecklist(authorizationHeader, req);
     }
+
+    @PatchMapping("/mate")
+    public ResponseEntity<GetMateChecklistRes> updateMateChecklist(@RequestHeader(AUTHORIZATION_HEADER) String authorizationHeader, @RequestBody MakeMateChecklistReq req) {
+        return checklistService.updateMateChecklist(authorizationHeader, req);
+    }
 }

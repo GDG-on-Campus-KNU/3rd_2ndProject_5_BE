@@ -48,4 +48,21 @@ public class MateChecklist {
         this.sleepHabits = sleepHabits;
         this.smoke = smoke;
     }
+
+    public void update(MateChecklist newChecklist) {
+        if (newChecklist.getSleepTime() != null)
+            this.sleepTime = newChecklist.getSleepTime();
+        if (newChecklist.getAwakeTime() != null)
+            this.awakeTime = newChecklist.getAwakeTime();
+        if (newChecklist.getShowerTakeTime() != null)
+            this.showerTakeTime = newChecklist.getShowerTakeTime();
+        if (newChecklist.getShowerTime() != null)
+            this.showerTime = newChecklist.getShowerTime();
+        if (newChecklist.getCleaningFreq() != null)
+            this.cleaningFreq = newChecklist.getCleaningFreq();
+        if (newChecklist.getSleepHabits() != null)
+            this.sleepHabits = newChecklist.getSleepHabits();
+        if (newChecklist.getSmoke() != null)
+            this.smoke = newChecklist.getSmoke();
+    }
 }

@@ -70,4 +70,17 @@ public class ChecklistService {
 
         return new ResponseEntity<>(new GetMemberChecklistRes(existingChecklist), HttpStatus.ACCEPTED);
     }
+
+    @Transactional
+    public ResponseEntity<GetMateChecklistRes> updateMateChecklist(String header, MakeMateChecklistReq req) {
+        Long memberId = getMemberIdFromHeader(header);
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+
+        MateChecklist existingChecklist = member.getMateChecklist();
+        existingChecklist.update(req.toEntity());
+
+        return new ResponseEntity<>(new GetMateChecklistRes(existingChecklist), HttpStatus.ACCEPTED);
+    }
 }
