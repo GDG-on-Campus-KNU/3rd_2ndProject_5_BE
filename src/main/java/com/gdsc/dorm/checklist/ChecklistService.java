@@ -74,4 +74,30 @@ public class ChecklistService {
 
         return new ResponseEntity<>(new GetMateChecklistRes(existingChecklist), HttpStatus.OK);
     }
+
+    public ResponseEntity<GetMemberChecklistRes> getMemberChecklist(String header, Long memberId) {
+        Member member;
+        if(memberId == null)
+            member = getMemberFromHeader(header);
+        else
+            member = memberRepository.findById(memberId)
+                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+
+        UserChecklist checklist = member.getUserChecklist();
+
+        return new ResponseEntity<>(new GetMemberChecklistRes(checklist), HttpStatus.OK);
+    }
+
+    public ResponseEntity<GetMateChecklistRes> getMateChecklist(String header, Long memberId) {
+        Member member;
+        if(memberId == null)
+            member = getMemberFromHeader(header);
+        else
+            member = memberRepository.findById(memberId)
+                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+
+        MateChecklist checklist = member.getMateChecklist();
+
+        return new ResponseEntity<>(new GetMateChecklistRes(checklist), HttpStatus.OK);
+    }
 }
