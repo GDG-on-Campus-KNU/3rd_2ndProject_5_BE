@@ -25,18 +25,18 @@ public class ChecklistService {
     private final MateChecklistRepository mateChecklistRepository;
     private final TokenProvider tokenProvider;
 
-    private Long getMemberIdFromHeader(String header) {
+    private Member getMemberFromHeader(String header) {
         String accessToken = tokenProvider.getAccessToken(header);
-        return tokenProvider.getUserId(accessToken);
+        Long memberId = tokenProvider.getUserId(accessToken);
+
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
     }
 
     @Transactional
     public ResponseEntity<GetMemberChecklistRes> makeMemberChecklist(String header, MakeMemberChecklistReq req) {
-        Long memberId = getMemberIdFromHeader(header);
-
         UserChecklist checklist = req.toEntity();
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+        Member member = getMemberFromHeader(header);
 
         userChecklistRepository.save(checklist);
         member.updateMemberChecklist(checklist);
@@ -46,11 +46,8 @@ public class ChecklistService {
 
     @Transactional
     public ResponseEntity<GetMateChecklistRes> makeMateChecklist(String header, MakeMateChecklistReq req) {
-        Long memberId = getMemberIdFromHeader(header);
-
         MateChecklist checklist = req.toEntity();
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+        Member member = getMemberFromHeader(header);
 
         mateChecklistRepository.save(checklist);
         member.updateMateChecklist(checklist);
@@ -60,10 +57,7 @@ public class ChecklistService {
 
     @Transactional
     public ResponseEntity<GetMemberChecklistRes> updateMemberChecklist(String header, MakeMemberChecklistReq req) {
-        Long memberId = getMemberIdFromHeader(header);
-
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+        Member member = getMemberFromHeader(header);
 
         UserChecklist existingChecklist = member.getUserChecklist();
         existingChecklist.update(req.toEntity());
@@ -73,10 +67,7 @@ public class ChecklistService {
 
     @Transactional
     public ResponseEntity<GetMateChecklistRes> updateMateChecklist(String header, MakeMateChecklistReq req) {
-        Long memberId = getMemberIdFromHeader(header);
-
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+        Member member = getMemberFromHeader(header);
 
         MateChecklist existingChecklist = member.getMateChecklist();
         existingChecklist.update(req.toEntity());
